@@ -1,0 +1,2 @@
+loadfile("slave.lua")()
+slave()
