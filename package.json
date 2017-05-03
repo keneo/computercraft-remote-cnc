@@ -1,0 +1,22 @@
+{
+  "name": "computercraft-remote-cnc",
+  "version": "1.0.0",
+  "description": "Control computercraft turtle from outside of the minecraft game.",
+  "main": "cnc-server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keneo/computercraft-remote-cnc.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/keneo/computercraft-remote-cnc/issues"
+  },
+  "homepage": "https://github.com/keneo/computercraft-remote-cnc#readme",
+  "dependencies": {
+    "carrier": "^0.3.0"
+  }
+}
