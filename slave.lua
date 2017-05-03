@@ -14,13 +14,12 @@ function slave()
 	while true do	  
 	  src = http.post(url.."?"..tostring(state))
 	  if not src then
-	  	state = 'nocmd'
+	  	--state = 'nocmd'
 	  	os.sleep(1)
 	  else
 	  	local cmd = src.readAll();
 	  	print('cmd: '..cmd);
-		state = ''
-	    loadstring(cmd)()
+		state = loadstring(cmd)(state)
 	    print('state: '..tostring(state));
 	    --print(state);
 	  end

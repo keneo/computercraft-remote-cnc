@@ -1,12 +1,13 @@
 // Load the TCP Library
-net = require('net');
-carrier = require('carrier');
+const net = require('net');
+const carrier = require('carrier');
+const http = require('http');
 
 
 // Keep track of the chat clients
-var clients = [];
-var webWaitingClients = [];
-var todoCommands = [];
+const clients = [];
+const webWaitingClients = [];
+const todoCommands = [];
 
 function sendNextCommandTo(webcli){
   var cmd = todoCommands.shift();
@@ -15,16 +16,16 @@ function sendNextCommandTo(webcli){
 }
 
 function addCommand(cmd) {
-  todoCommands.push(cmd);  
+  todoCommands.push(cmd);
   if (webWaitingClients.length>0){
     var webcli = webWaitingClients.shift();
-    
+
     sendNextCommandTo(webcli);
   } else {
     broadcast("REQUEST_ENQUEUED " + cmd);
   }
 }
-  
+
 // Send a message to all clients
 function broadcast(message, sender) {
   clients.forEach(function (client) {
@@ -40,7 +41,7 @@ function broadcast(message, sender) {
 net.createServer(function (socket) {
 
   // Identify this client
-  socket.name = socket.remoteAddress + ":" + socket.remotePort 
+  socket.name = socket.remoteAddress + ":" + socket.remotePort
 
   // Put this new client in the list
   clients.push(socket);
@@ -80,12 +81,8 @@ net.createServer(function (socket) {
 // Put a friendly message on the terminal of the server.
 console.log("C&C admin telnet server running at port 5000\n");
 
-var http = require('http');
-//var fs = require('fs');
-//var index = fs.readFileSync('index.html');
-
 http.createServer(function (req, res) {
-  
+
   if (req.url=="/hello/") {
     res.end("Hello!");
   } else if (req.url.startsWith("/?")) {
@@ -97,7 +94,7 @@ http.createServer(function (req, res) {
       sendNextCommandTo(webcli);
     } else {
       broadcast("SLAVE_WAITING");
-      webWaitingClients.push(res);    
+      webWaitingClients.push(res);
     }
 
   } else if (req.url=="/favicon.ico") {
@@ -106,4 +103,4 @@ http.createServer(function (req, res) {
     broadcast("UNHANDLED " + req.url);
   }
 }).listen(8080);
-console.log("C&C turtle slave API web server running at http://127.0.0.1:8080/\n");
+console.log("C&C turtle overlord (web server) running at http://127.0.0.1:8080/\n");
